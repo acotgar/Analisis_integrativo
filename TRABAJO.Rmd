@@ -1,0 +1,50 @@
+---
+title: "TrabajoAnalisisIntegrativo"
+author: "Ana"
+date: "2024-02-21"
+output: html_document
+---
+
+# TITULO
+
+### Autores:
+
+## Introducción
+
+### Antecedentes
+
+Descripción de los datos utilizados 
+
+### Objetivos
+
+Pregunta biológica planteada
+
+## Exploración de los datos mediante PCA
+
+Primero cargamos todos los datos de las múltiples ómicas.
+
+```{r}
+load("asociaciones.RData")
+load("data_HNSC.clinical.RData")
+clinical.data <- X
+load("data_HNSC.genes.RData")
+genes.data <- X
+load("data_HNSC.mutation.RData")
+mutation.data <- X
+load("data_HNSC.TF.RData")
+TF.data <- X_TF
+supervivencia <- Y
+
+genes <- readxl::read_xlsx("DE_genes.xlsx")
+mirna <- readxl::read_xlsx("DE_mirna.xlsx")
+```
+
+## Cálculo de la potencia estadística
+
+## Integración e interpretación de ómicas
+
+Aquí habria que ver que integraciones vamos a hacer
+
+## Otros métodos
+
+## Conclusiones
