@@ -39,11 +39,75 @@ genes <- readxl::read_xlsx("DE_genes.xlsx")
 mirna <- readxl::read_xlsx("DE_mirna.xlsx")
 ```
 
+Tenemos un total de 443 observaciones, es decir, pacientes.
+
+## PCA y Efecto Lote
+
+```{r}
+boxplot(genes.data[,1:50])
+```
+
+```{r}
+genes.data_sum1 = genes.data + 1
+boxplot(log2(genes.data_sum1[,1:50]))
+```
+
+```{r}
+#BiocManager::install("ropls")
+library(ropls)
+```
+
+```{r}
+dim(TF.data)
+```
+
+Tenemos 443 individuos (filas) y 927 genes medidos (columnas).
+
+```{r}
+#t_TF.data = t(TF.data)   Creo que en este caso no es necesario trasponer
+pca_TF = opls(TF.data, predI=4, algoC="nipals", scaleC = "center")  # Centramos
+```
+
+```{r}
+condis = substr(rownames(TF.data), start = 1, stop = 1)
+plot(pca_TF, typeVc = "x-score", parAsColFcVn = condis)
+```
+
+```{r}
+plot(pca_TF, typeVc = "x-score", parAsColFcVn = condis, parCompVi = c(3, 4))
+```
+
+Intentamos clasificar nuestros datos en función de su supervivencia (TRUE si fallecieron y FALSE si sobrevivieron).
+
+```{r}
+grupos_supervivencia <- split(supervivencia, supervivencia$event)
+head(grupos_supervivencia)
+tail(grupos_supervivencia)
+```
+
+Una vez tengo la lista agrupada en función de TRUE y FALSE, los separo en dos dataframes.
+
+```{r}
+df_true = grupos_supervivencia$`TRUE`
+df_false = grupos_supervivencia$`FALSE`
+```
+
+No se si esto sirve, todavía no lo he probado, básicamente le he añadido una F a las variables (pacientes) que son FALSE para diferenciarlos de las TRUE:
+
+```{r}
+#nombre_filas_false = rownames(df_false)
+#nombre_filas_false = paste0("F-", nombre_filas_false)
+#df_false_copia = df_false
+#rownames(df_false_copia) = nombre_filas_false
+
+#supervivencia_copia = rbind(df_true, df_false_copia)
+```
+
 ## Cálculo de la potencia estadística
 
 ## Integración e interpretación de ómicas
 
-Aquí habria que ver que integraciones vamos a hacer
+Aquí habría que ver que integraciones vamos a hacer
 
 ## Otros métodos
 
